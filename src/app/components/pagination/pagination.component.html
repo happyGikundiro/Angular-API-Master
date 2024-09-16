@@ -1,4 +1,4 @@
-  <div class="flex justify-center my-4 items-center space-x-2">
+   <div class="flex justify-center my-4 items-center space-x-2">
     <button
       class="text-green-800 font-semibold py-2 px-4 rounded hover:text-green-900 flex items-center"
       [disabled]="currentPage === 1"
@@ -29,7 +29,7 @@
       class="text-green-800 font-semibold py-2 px-4 rounded hover:text-green-900 flex items-center"
       [disabled]="currentPage === totalPages"
       [ngClass]="{
-        'text-gray-500': currentPage === totalPages,
+        'text-gray-600': currentPage === totalPages,
       }"
       (click)="onNext()"
     >
