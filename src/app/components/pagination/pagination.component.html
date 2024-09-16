@@ -1,0 +1,16 @@
+<div class="flex justify-center my-4">
+    <button
+      class="mx-2 bg-blue-500 text-white py-2 px-4 rounded"
+      [disabled]="currentPage === 1"
+      (click)="onPrevious()"
+    >
+      Previous
+    </button>
+    <span class="mx-2">{{ currentPage }}</span>
+    <button
+      class="mx-2 bg-blue-500 text-white py-2 px-4 rounded"
+      (click)="onNext()"
+    >
+      Next
+    </button>
+  </div>

@@ -1,1 +1,64 @@
-<p>posts works!</p>
+
+   <div class="container mx-auto">
+
+    <div class='flex justify-between items-center'>
+    <h2 class="text-2xl font-bold my-4">Posts:</h2>
+    <button (click)="openForm()" class="bg-green-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    
+    <ul class="list-none">
+      <li *ngFor="let post of posts" class="my-4 p-4 border-b border-gray-300">
+        
+        <div class="flex justify-between items-center mb-2">
+          
+          <div class="flex space-x-4">
+            <div class="text-sm text-gray-600">User ID: {{ post.userId }}</div>
+            <div class="text-sm text-gray-600">Post ID: {{ post.id }}</div>
+          </div>
+          
+          <div class="flex space-x-4">
+            <button (click)="viewPost(post.id)" aria-label="View Post" class="text-green-900 hover:text-green-900">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button (click)="editPost(post.id)" aria-label="Edit Post" class="text-yellow-500 hover:text-yellow-700">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button (click)="deletePost(post.id)" aria-label="Delete Post" class="text-red-500 hover:text-red-700">
+              <i class="fas fa-trash"></i> 
+            </button>
+          </div>
+          
+        </div>
+
+        <h3 class="text-xl font-semibold text-green-900">{{ post.title }}</h3>
+        <p class="text-gray-700 mt-2">{{ post.body }}</p>
+      </li>
+    </ul>
+  
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div>
+
+  <div *ngIf="isFormVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeForm()">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative" (click)="$event.stopPropagation()">
+      <button (click)="closeForm()" class="absolute top-2 right-6 text-green-800 hover:text-green-900">
+        <i class="fas fa-times"></i>
+      </button>
+      <app-add-post></app-add-post>
+    </div>
+  </div>
+
+  <div *ngIf="isFormVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeForm()">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative" (click)="$event.stopPropagation()">
+      <button (click)="closeForm()" class="absolute top-2 right-6 text-green-800 hover:text-green-900">
+        <i class="fas fa-times"></i>
+      </button>
+      <app-edit-post *ngIf="selectedPostId" [postId]="selectedPostId"></app-edit-post>
+    </div>
+  </div>

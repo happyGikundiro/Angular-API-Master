@@ -1,1 +1,26 @@
-<p>add-post works!</p>
+<div class="container mx-auto">
+    <h2 class="text-2xl font-bold my-4 text-green-900">Create New Post</h2>
+  
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+      <input
+        formControlName="title"
+        class="mb-4 p-2 border rounded"
+        placeholder="Title"
+        required
+      />
+      <textarea
+        formControlName="body"
+        class="mb-4 p-2 border rounded"
+        placeholder="Body"
+        required
+      ></textarea>
+      <button
+        type="submit"
+        class="bg-green-800 hover:bg-green-900 text-white py-2 px-4 rounded-full cursor-pointer"
+        [disabled]="postForm.invalid"
+      >
+        Create Post
+      </button>
+    </form>
+  </div>
+  
