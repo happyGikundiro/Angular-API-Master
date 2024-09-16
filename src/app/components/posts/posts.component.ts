@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PostsService } from '../../services/posts/posts.service';
 import { Post } from '../../model/model';
 import { Router } from '@angular/router';
@@ -8,13 +9,15 @@ import { Router } from '@angular/router';
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })
-export class PostsComponent {
+export class PostsComponent implements OnInit, OnDestroy {
 
   posts: Post[] = [];
   currentPage: number = 1;
   totalPages: number = 10;
-  isFormVisible = false;
-  selectedPostId?: number;
+  isFormVisible: boolean = false;
+  isLoading: boolean = true;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(private postService: PostsService, private router: Router) {}
 
@@ -23,24 +26,26 @@ export class PostsComponent {
   }
 
   fetchPosts(page: number): void {
-    this.postService.getPosts(page, 10).subscribe(
+    const postSubscription = this.postService.getPosts(page, 10).subscribe(
       (posts) => {
         this.posts = posts;
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching posts:', error);
+        this.isLoading = false;
       }
     );
+
+    this.subscriptions.add(postSubscription);
   }
 
-  openForm(postId?: number): void {
-    this.selectedPostId = postId;
+  openForm(): void {
     this.isFormVisible = true;
   }
 
   closeForm(): void {
     this.isFormVisible = false;
-    this.selectedPostId = undefined;
   }
 
   onPageChange(page: number): void {
@@ -57,12 +62,16 @@ export class PostsComponent {
   }
   
   deletePost(id: number): void {
-    if (confirm('Are you sure you want to delete this post?')) {
-      this.postService.deletePost(id).subscribe(() => {
-        alert('Post deleted successfully!');
-        this.fetchPosts(this.currentPage);
-      });
-    }
+    const deleteSubscription = this.postService.deletePost(id).subscribe(() => {
+      alert('Post deleted successfully!');
+      this.fetchPosts(this.currentPage);
+    });
+
+    this.subscriptions.add(deleteSubscription);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
 }

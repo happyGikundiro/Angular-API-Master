@@ -1,16 +1,40 @@
-<div class="flex justify-center my-4">
+  <div class="flex justify-center my-4 items-center space-x-2">
     <button
-      class="mx-2 bg-blue-500 text-white py-2 px-4 rounded"
+      class="text-green-800 font-semibold py-2 px-4 rounded hover:text-green-900 flex items-center"
       [disabled]="currentPage === 1"
+      [ngClass]="{
+        'text-gray-500': currentPage === 1,
+      }"
       (click)="onPrevious()"
     >
+      <i class="fas fa-arrow-left mr-2"></i>
       Previous
     </button>
-    <span class="mx-2">{{ currentPage }}</span>
+  
+    <ng-container *ngFor="let page of pages; let i = index">
+      <button
+        *ngIf="shouldShowPage(page)"
+        class="py-2 px-4 rounded-full"
+        [ngClass]="{
+          'bg-green-800 text-white': page === currentPage,
+          'text-gray-500': page !== currentPage
+        }"
+        (click)="onPageClick(page)"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+  
     <button
-      class="mx-2 bg-blue-500 text-white py-2 px-4 rounded"
+      class="text-green-800 font-semibold py-2 px-4 rounded hover:text-green-900 flex items-center"
+      [disabled]="currentPage === totalPages"
+      [ngClass]="{
+        'text-gray-500': currentPage === totalPages,
+      }"
       (click)="onNext()"
     >
       Next
+      <i class="fas fa-arrow-right ml-2"></i>
     </button>
   </div>
+  

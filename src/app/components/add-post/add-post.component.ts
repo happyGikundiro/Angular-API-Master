@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
-  styleUrl: './add-post.component.css' // Fixed typo: styleUrl -> styleUrls
+  styleUrl: './add-post.component.css' 
 })
 export class AddPostComponent implements OnInit {
   postForm!: FormGroup;
@@ -19,7 +19,7 @@ export class AddPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.postForm = this.fb.group({
-      userId: [1], // Default value for userId
+      userId: [1],
       title: ['', Validators.required],
       body: ['', Validators.required]
     });
@@ -30,7 +30,7 @@ export class AddPostComponent implements OnInit {
       this.postsService.createPost(this.postForm.value).subscribe(
         () => {
           alert('Post created successfully!');
-          this.router.navigate(['/posts']);
+          this.router.navigate(['']);
         },
         (error) => {
           console.error('Error creating post:', error);
